@@ -4,7 +4,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<!--
+<!--0
 	Author: W3layouts
 	Author URL: http://w3layouts.com
 	License: Creative Commons Attribution 3.0 Unported
@@ -104,8 +104,8 @@
 							</li>
 							</c:forEach>
 						</ul>
-							<form action="#" method="post" class="form-inline my-2 my-lg-0 header-search">
-								<input class="form-control mr-sm-2" type="search" placeholder="Search here..." name="Search" required="">
+							<form action="searchwithtitle" method="post" class="form-inline my-2 my-lg-0 header-search">
+								<input class="form-control mr-sm-2" type="search" placeholder="Tìm kiếm bài viết" name="Search" required="">
 								<button class="btn btn1 my-2 my-sm-0" type="submit"><i class="fas fa-search"></i></button>
 							</form>
 		

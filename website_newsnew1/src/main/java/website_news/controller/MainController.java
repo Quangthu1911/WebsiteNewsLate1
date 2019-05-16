@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -191,7 +192,7 @@ public class MainController {
 		
 		List<detailnews> list1 = new ArrayList<detailnews>();
 		list = dtnService.findAllad();
-		//list1=dtnService.findAll1();
+		list1=dtnService.findAll1();
 		for (int i = 0; i < list.size(); i++) {
 			if (list.get(i).getName().equals(name) && list.get(i).getPassword().equals(pass)) {
 				//refreshNameAndPass(request);
@@ -212,25 +213,29 @@ public class MainController {
 	}
 	@GetMapping("/readDetail")
 
-	public String readDetail(HttpServletRequest request) {
-		
+	public String readDetail(HttpServletRequest request,HttpServletResponse response) {
+        response.addHeader("X-XSS-Protection", "1; mode=block");
+		response.setHeader("Cache-Control", "max-age=14400");
+		Cookie cookie=new Cookie("any", "Tamper=367f094b-089e-48a7-9fd0-356f70cc69cb");
+		response.addCookie(cookie);
 		 request.setAttribute("ctg", dtnService.getAllListCtg());
+		 
 		List<detailnews> list = new ArrayList<detailnews>();
 		list=dtnService.findAll1();
 		int len=list.size();
-		String id= request.getParameter("idfirstnews");
+		String id= request.getParameter("idfirstnews").toString();
 		int iddetailnews = Integer.parseInt(id);
 
-		detailnews dtu=new detailnews();
-		dtu=dtnService.findDetailNewsWithID(iddetailnews);
-		if(dtu.getCountseen()==null)
-		{
-			dtu.setCountseen("0");
-		}
-		int temp=Integer.parseInt(dtu.getCountseen());
-		temp+=1;
-		dtu.setCountseen(String.valueOf(temp));
-		dtnService.save(dtu);
+//		detailnews dtu=new detailnews();
+//		dtu=dtnService.findDetailNewsWithID(iddetailnews);
+//		if(dtu.getCountseen()==null)
+//		{
+//			dtu.setCountseen("0");
+//		}
+//		int temp=Integer.parseInt(dtu.getCountseen());
+//		temp+=1;
+//		dtu.setCountseen(String.valueOf(temp));
+//		dtnService.save(dtu);
 		
 		List<detailnews> listThoiSuNews = new ArrayList<detailnews>();
 		List<detailnews> listGiaoThongNews = new ArrayList<detailnews>();
@@ -395,12 +400,6 @@ public class MainController {
 		request.setAttribute("ctg", dtnService.findCategoryNewsWithID(idct));
 		return "index_news";
 	}
-
-	@GetMapping("/hello")
-	public String readDed(HttpServletRequest request) {
-		return "cc";
-	}
-
 	@GetMapping("/add-tasks")
 	public String change(HttpServletRequest request,@ModelAttribute detailnews task) {
 		
@@ -484,6 +483,20 @@ public class MainController {
 	@GetMapping("/logout") 
 	public String logOut(HttpServletRequest request) {
 		Load(request);
+		return "index_news";
+	}
+	@PostMapping("/searchwithtitle")
+	public String haha(HttpServletRequest request)
+	{
+		
+		String lala=request.getParameter("search");
+		List<detailnews> list=em.createQuery(
+			    "SELECT c FROM detailnews c WHERE c.title LIKE :custName")
+			    .setParameter("custName","%"+ lala+"%")
+			    .setMaxResults(10)
+			    .getResultList();
+		request.setAttribute("leftNews", list);
+		//loadData(request);
 		return "index_news";
 	}
 }
