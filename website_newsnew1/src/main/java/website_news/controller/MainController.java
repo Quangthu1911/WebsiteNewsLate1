@@ -484,19 +484,20 @@ public class MainController {
 	public String logOut(HttpServletRequest request) {
 		Load(request);
 		return "index_news";
+	
 	}
 	@PostMapping("/searchwithtitle")
 	public String haha(HttpServletRequest request)
 	{
 		
 		String lala=request.getParameter("search");
-		List<detailnews> list=em.createQuery(
-			    "SELECT c FROM detailnews c WHERE c.title LIKE :custName")
-			    .setParameter("custName","%"+ lala+"%")
-			    .setMaxResults(10)
-			    .getResultList();
-		request.setAttribute("leftNews", list);
-		//loadData(request);
+//	//	List<detailnews> list=em.createQuery(
+//			    "SELECT c FROM detailnews c WHERE c.title LIKE :custName")
+//			    .setParameter("custName","%"+ lala+"%")
+//			    .setMaxResults(10)
+//			    .getResultList();
+//		request.setAttribute("leftNews", list);
+//		//loadData(request);
 		return "index_news";
 	}
 }
